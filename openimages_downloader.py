@@ -32,6 +32,10 @@ import urllib2
 import glob
 import csv
 import math
+import Image
+import StringIO
+
+img_size = 299, 299
 
 def download(url, timeout, retry, sleep, verbose=False):
     """Downloads a file at given URL."""
@@ -162,13 +166,14 @@ def download_openimages(list_filename,
 
                 content = download(url, timeout, retry, sleep_after_dl)
                 ext = imgtype2ext(imghdr.what('', content))
+                im = Image.open(StringIO.StringIO(content))
+                im.thumbnail(img_size, Image.ANTIALIAS)
                 try:
                     make_directory(directory)
                 except:
                     pass
                 path = os.path.join(directory, '{0}.{1}'.format(name, ext))
-                with open(path, 'w') as f:
-                    f.write(content)
+                im.save(path, "JPEG")
                 counts_success[i] += 1
                 time.sleep(sleep_after_dl)
 
