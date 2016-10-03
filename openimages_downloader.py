@@ -193,14 +193,14 @@ def download_openimages(list_filename,
         while not done[0]:
             count_success = sum(counts_success)
             count = count_success + sum(counts_fail)
-            rate_done = count * 100.0 / count_total
+            rate_done = (offset + count) * 100.0 / (offset + count_total)
             if count == 0:
                 rate_success = 0
             else:
                 rate_success = count_success * 100.0 / count
             sys.stderr.write(
                 '{0} / {1} ({2}%) done, {3} / {0} ({4}%) succeeded                    {5}'.format(
-                    count, count_total, rate_done, count_success, rate_success, delim))
+                    offset + count, offset + count_total, rate_done, count_success, rate_success, delim))
 
             time.sleep(msg)
         sys.stderr.write('done')
@@ -251,4 +251,4 @@ if __name__ == '__main__':
     download_openimages(args.list, args.outdir,
                         timeout=args.timeout, retry=args.retry,
                         num_jobs=args.jobs, verbose=args.verbose, 
-                        offset=args.offset, msg=args.msg)
+                        offset=args.offset, msg=args.msg, sleep_after_dl=args.sleep)
