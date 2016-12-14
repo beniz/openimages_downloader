@@ -133,7 +133,7 @@ def download_openimages(list_filename,
                     continue
                 if count >= offset:
                     name = row[0]
-                    url = row[2]
+                    url = row[1]
                     dirc = str(int(math.ceil(count/20000)))
                     entries.put((name, url, dirc), block=True)
                 count += 1
@@ -171,6 +171,7 @@ def download_openimages(list_filename,
                 try:
                     make_directory(directory)
                 except:
+                    print 'failed making directory=',directory
                     pass
                 path = os.path.join(directory, '{0}.{1}'.format(name, ext))
                 im.save(path, "JPEG")
